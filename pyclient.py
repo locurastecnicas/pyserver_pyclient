@@ -10,9 +10,18 @@ HOST='127.0.0.1'
 PORT=60000
 
 # Creamos el socket.
-ClientSocket=socket.socket(socket.AF_INET,socket.SOCK_STREAM,0)
+try:
+  ClientSocket=socket.socket(socket.AF_INET,socket.SOCK_STREAM,0)
+except socket.error:
+  print("No se puede crear el socket.")
+  sys.exit(111)
 # Conectar con el servidor. Necesario definir tupla para la direccion del server.
-ClientSocket.connect((HOST,PORT))
+try:
+  ClientSocket.connect((HOST,PORT))
+except socket.error:
+  print("No se puede conectar con el servidor.")
+  sys.exit(111)
+
 # Enviar datos.
 while True:
     DATA=raw_input('>>')
