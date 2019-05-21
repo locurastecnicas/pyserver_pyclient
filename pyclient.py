@@ -3,11 +3,22 @@
 import time
 import socket
 import sys
+import signal
 
 # Direccion IP remota del servidor
 HOST='127.0.0.1'
 # Puerto de escucha del servidor.
 PORT=60000
+
+def control_signal(signal_control, signal_handler):
+  print("Stopping pyclient. Please wait....")
+  print("Signal received: " + str(signal_control))
+  ## Es necesario disponer del objecto socket abierto para cerrarlo
+  ## de manera correcta.
+  sys.exit(1)
+
+signal.signal(signal.SIGINT, control_signal)
+signal.signal(signal.SIGTERM, control_signal)
 
 # Creamos el socket.
 try:

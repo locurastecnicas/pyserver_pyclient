@@ -4,11 +4,22 @@ import errno
 import time
 import socket
 import sys
+import signal
 
 # Direccion IP del servidor
 HOST='127.0.0.1'
 # Puerto de escucha del servidor.
 PORT=22
+
+def control_signal(signal_control, signal_handler):
+  print("Stopping pyerver. Please wait....")
+  print("Signal received: " + str(signal_control))
+  ## Es necesario disponer de la lista de sockets abiertos en
+  ## este punto para cerrarlos de forma correcta.
+  sys.exit(1)
+
+signal.signal(signal.SIGINT, control_signal)
+signal.signal(signal.SIGTERM, control_signal)
 
 # Creamos el socket.
 try:
