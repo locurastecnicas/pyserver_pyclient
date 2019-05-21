@@ -9,7 +9,7 @@ import signal
 # Direccion IP del servidor
 HOST='127.0.0.1'
 # Puerto de escucha del servidor.
-PORT=22
+PORT=60000
 
 def control_signal(signal_control, signal_handler):
   print("Stopping pyerver. Please wait....")
