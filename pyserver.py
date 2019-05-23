@@ -33,6 +33,11 @@ except socket.error as CreateSocket:
 try:
   ServerSocket.bind((HOST,PORT))
 except socket.error as BindError:
+  exctype, value = sys.exc_info()[:2]
+  print("En exctype tengo ")
+  print(exctype)
+  print("En value tengo ")
+  print(value)
   print("No se puede enlazar con la direccion especificada.")
   print(BindError)
   sys.exit(111)
