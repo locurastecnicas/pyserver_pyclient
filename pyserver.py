@@ -15,6 +15,7 @@ PORT=60000
 class echo_server(threading.Thread):
   def __init__(self, connected_socket, client_addr):
     threading.Thread.__init__(self)
+    self.close_flag=threading.Event()
     self.chat_socket=connected_socket
     self.remote_addr=client_addr
     print("Iniciado thread de conversacion.")
@@ -22,13 +23,21 @@ class echo_server(threading.Thread):
   def run(self):
     # Recibir datos del cliente.
     while True:
-        recData=self.chat_socket.recv(1024)
+        if not self.close_flag.is_set():
+           recData=self.chat_socket.recv(1024)
+        else:
+           print("Pues se ha activado el flag.")
+           break
+        if not recData:
+           print("CLIENT - Recibido cierre desde el cliente.")
+           break
         print("La direccion remota es ", self.remote_addr )
         print("Los datos recibidos son ", recData)
         # Enviar datos al cliente.
         self.chat_socket.send(b'Hola cliente, yo soy el servidor.')
-        if not recData:
-            break
+    if self.close_flag.is_set():
+        print("SERVER - Enviando cierre al cliente.")
+        self.chat_socket.send(b'CIERRE')   
     self.chat_socket.close()
 
 def control_signal(signal_control, signal_handler):
@@ -36,7 +45,16 @@ def control_signal(signal_control, signal_handler):
   print("Signal received: " + str(signal_control))
   ## Es necesario disponer de la lista de sockets abiertos en
   ## este punto para cerrarlos de forma correcta.
-  sys.exit(1)
+  for chatThread in threading.enumerate():
+    print("Cerrando threads y conversaciones.")
+    print("Procesando thread" + chatThread.getName())
+    if chatThread.getName() == "MainThread":
+      continue
+    chatThread.close_flag.set()
+  raise CloseAll
+
+class CloseAll(Exception):
+  pass
 
 signal.signal(signal.SIGINT, control_signal)
 signal.signal(signal.SIGTERM, control_signal)
@@ -68,19 +86,12 @@ ServerSocket.listen(10)
 # Lanzamos el metodo accept sobre el socket. Esto bloquea el codigo hasta que se establezca
 # una conexion. Este metodo devuelve una pareja conn, addr; siendo conn un nuevo objecto socket
 # para la nueva conexion y addr la direccion remota que se ha conectado.
-while True:
+try:
+  while True:
     connSocket,remoteAddr=ServerSocket.accept()  
     chat=echo_server(connSocket,remoteAddr) 
     chat.start()
-# Recibir datos del cliente.
-#while True:
-#    recData=connSocket.recv(1024)
-#    print("La direccion remota es ", remoteAddr )
-#    print("Los datos recibidos son ", recData)
-#    # Enviar datos al cliente.
-#    connSocket.send(b'Hola cliente, yo soy el servidor.')
-#    if not recData:
-#        break
-
-ServerSocket.close()
+except CloseAll:
+  ServerSocket.close()
+  sys.exit(1)
 
