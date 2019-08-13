@@ -14,10 +14,12 @@ def readConfig(configFile):
   print("Read the configuration of the client.")
   try:
     configFile=open("client.conf","r")
+    confString=configFile.read()
   except IOError as fileError:
     print("Couldn't open client config file.")
     print(fileError.strerror + ", error code: " + str(fileError.errno))
     sys.exit(fileError.errno)
+  print(confString)
 
 def control_signal(signal_control, signal_handler):
   print("Stopping pyclient. Please wait....")
