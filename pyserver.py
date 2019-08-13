@@ -40,6 +40,9 @@ class echo_server(threading.Thread):
         self.chat_socket.send(b'CIERRE')   
     self.chat_socket.close()
 
+def readConfig(configFile):
+  print("Read the configuration of the server.")
+
 def control_signal(signal_control, signal_handler):
   print("Stopping pyerver. Please wait....")
   print("Signal received: " + str(signal_control))
@@ -59,12 +62,14 @@ class CloseAll(Exception):
 signal.signal(signal.SIGINT, control_signal)
 signal.signal(signal.SIGTERM, control_signal)
 
+readConfig("server.conf")
+
 # Creamos el socket.
 try:
   ServerSocket=socket.socket(socket.AF_INET,socket.SOCK_STREAM,0)
-except socket.error as CreateSocket:
-  print("No se puede crear el socket.")
-  print(CreateSocket)
+except IOError as socketError:
+  print("Could not bind to socket.")
+  print("%s %d",socketError.strerror, socketError.errno)
   sys.exit(100)
 
 # Enlazar el servidor con la direccion local y el puerto. Necesario definir una tupla.

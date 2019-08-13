@@ -23,7 +23,7 @@ def control_signal(signal_control, signal_handler):
 signal.signal(signal.SIGINT, control_signal)
 signal.signal(signal.SIGTERM, control_signal)
 
-readConfig("Fichero")
+readConfig("client.conf")
 
 # Creamos el socket.
 try:
@@ -36,8 +36,9 @@ except IOError as socketError:
 # address and port of the server.
 try:
   ClientSocket.connect((HOST,PORT))
-except socket.error:
-  print("No se puede conectar con el servidor.")
+except IOError as socketError:
+  print("There was an error connecting to the server.")
+  print("%s %d",socketError.strerror, socketError.errno)
   sys.exit(111)
 
 # Enviar datos.
