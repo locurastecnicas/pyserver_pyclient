@@ -42,6 +42,12 @@ class echo_server(threading.Thread):
 
 def readConfig(configFile):
   print("Read the configuration of the server.")
+  try:
+    configFile=open("server.conf","r")
+  except IOError as fileError:
+    print("Couldn't open server config file.")
+    print(fileError.strerror + ", error code: " + str(fileError.errno))
+    sys.exit(fileError.errno)
 
 def control_signal(signal_control, signal_handler):
   print("Stopping pyerver. Please wait....")
@@ -92,10 +98,10 @@ try:
     chat=echo_server(connSocket,remoteAddr) 
     chat.start()
 except IOError as commsError:
-    print("There was an unexpected error.")
-    print(socketError.strerror + ", error code: " + str(socketError.errno))
-    sys.exit(socketError.errno)
+  print("There was an unexpected error.")
+  print(socketError.strerror + ", error code: " + str(socketError.errno))
+  sys.exit(socketError.errno)
 except CloseAll:
-    ServerSocket.close()
-    sys.exit(1)
+  ServerSocket.close()
+  sys.exit(1)
 

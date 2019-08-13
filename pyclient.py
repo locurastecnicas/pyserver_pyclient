@@ -12,6 +12,12 @@ PORT=60000
 
 def readConfig(configFile):
   print("Read the configuration of the client.")
+  try:
+    configFile=open("client.conf","r")
+  except IOError as fileError:
+    print("Couldn't open client config file.")
+    print(fileError.strerror + ", error code: " + str(fileError.errno))
+    sys.exit(fileError.errno)
 
 def control_signal(signal_control, signal_handler):
   print("Stopping pyclient. Please wait....")
