@@ -7,11 +7,6 @@ import sys
 import signal
 import threading
 
-# Direccion IP del servidor
-HOST='127.0.0.1'
-# Puerto de escucha del servidor.
-PORT=60000
-
 class echo_server(threading.Thread):
   def __init__(self, connected_socket, client_addr):
     threading.Thread.__init__(self)

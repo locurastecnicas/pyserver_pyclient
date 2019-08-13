@@ -5,11 +5,6 @@ import socket
 import sys
 import signal
 
-# Direccion IP remota del servidor
-HOST='127.0.0.1'
-# Puerto de escucha del servidor.
-PORT=60000
-
 def readConfig(configFile):
   print("Read the configuration of the client.")
   dictConf={}
