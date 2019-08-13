@@ -50,7 +50,7 @@ except IOError as socketError:
 # Stablishing connection with the remote server. A tuple is needed to define the
 # address and port of the server.
 try:
-  ClientSocket.connect((clientConfig["HOST"],clientConfig["PORT"]))
+  ClientSocket.connect((clientConfig["HOST"],int(clientConfig["PORT"])))
 except IOError as socketError:
   print("There was an error connecting to the server.")
   print(socketError.strerror + ", error code: " + str(socketError.errno))
