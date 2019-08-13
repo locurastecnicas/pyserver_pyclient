@@ -30,7 +30,7 @@ try:
   ClientSocket=socket.socket(socket.AF_INET,socket.SOCK_STREAM,0)
 except IOError as socketError:
   print("There was an error creating the socket.")
-  print("%s %d" + socketError.strerror + str(socketError.errno))
+  print(socketError.strerror + ", error code: " + str(socketError.errno))
   sys.exit(socketError.errno)
 # Stablishing connection with the remote server. A tuple is needed to define the
 # address and port of the server.
@@ -38,7 +38,7 @@ try:
   ClientSocket.connect((HOST,PORT))
 except IOError as socketError:
   print("There was an error connecting to the server.")
-  print("%s %d" + socketError.strerror + str(socketError.errno))
+  print(socketError.strerror + ", error code: " + str(socketError.errno))
   sys.exit(socketError.errno)
 
 # Enviar datos.

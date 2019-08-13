@@ -68,22 +68,17 @@ readConfig("server.conf")
 try:
   ServerSocket=socket.socket(socket.AF_INET,socket.SOCK_STREAM,0)
 except IOError as socketError:
-  print("Could not bind to socket.")
-  print("%s %d",socketError.strerror, socketError.errno)
-  sys.exit(100)
+  print("Could not create the socket.")
+  print(socketError.strerror + ", error code: " + str(socketError.errno))
+  sys.exit(socketError.errno)
 
 # Enlazar el servidor con la direccion local y el puerto. Necesario definir una tupla.
 try:
   ServerSocket.bind((HOST,PORT))
-except socket.error as BindError:
-  exctype, value = sys.exc_info()[:2]
-  print("En exctype tengo ")
-  print(exctype)
-  print("En value tengo ")
-  print(value)
-  print("No se puede enlazar con la direccion especificada.")
-  print(BindError)
-  sys.exit(111)
+except IOError as socketError:
+  print("Could not bind with the specified address.")
+  print(socketError.strerror + ", error code: " + str(socketError.errno))
+  sys.exit(socketError.errno)
 
 # Pasar el socket a estado LISTEN. En versiones inferiores a la 3.5 de Python, el valor
 # de backlog es obligatorio.
@@ -96,7 +91,11 @@ try:
     connSocket,remoteAddr=ServerSocket.accept()  
     chat=echo_server(connSocket,remoteAddr) 
     chat.start()
-except CloseAll:
-  ServerSocket.close()
-  sys.exit(1)
+  except IOError as commsError:
+    print("There was an unexpected error.")
+    print(socketError.strerror + ", error code: " + str(socketError.errno))
+    sys.exit(socketError.errno)
+  except CloseAll:
+    ServerSocket.close()
+    sys.exit(1)
 
