@@ -10,6 +10,9 @@ HOST='127.0.0.1'
 # Puerto de escucha del servidor.
 PORT=60000
 
+def readConfig(configFile):
+  print("Read the configuration of the client.")
+
 def control_signal(signal_control, signal_handler):
   print("Stopping pyclient. Please wait....")
   print("Signal received: " + str(signal_control))
@@ -20,13 +23,17 @@ def control_signal(signal_control, signal_handler):
 signal.signal(signal.SIGINT, control_signal)
 signal.signal(signal.SIGTERM, control_signal)
 
+readConfig("Fichero")
+
 # Creamos el socket.
 try:
   ClientSocket=socket.socket(socket.AF_INET,socket.SOCK_STREAM,0)
-except socket.error:
-  print("No se puede crear el socket.")
+except IOError as socketError:
+  print("There was an error creating the socket.")
+  priint("%s %d",socketError.strerror, socketError.errno)
   sys.exit(111)
-# Conectar con el servidor. Necesario definir tupla para la direccion del server.
+# Stablishing connection with the remote server. A tuple is needed to define the
+# address and port of the server.
 try:
   ClientSocket.connect((HOST,PORT))
 except socket.error:
