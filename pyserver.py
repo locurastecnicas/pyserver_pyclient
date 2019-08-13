@@ -42,12 +42,20 @@ class echo_server(threading.Thread):
 
 def readConfig(configFile):
   print("Read the configuration of the server.")
+  dictConf={}
   try:
     configFile=open("server.conf","r")
+    confString=configFile.read()
   except IOError as fileError:
     print("Couldn't open server config file.")
     print(fileError.strerror + ", error code: " + str(fileError.errno))
     sys.exit(fileError.errno)
+  for confLine in confString.split("\n"):
+    if len(confLine) != 0:
+      tempLine=confLine.replace(" ","").split("=")
+      dictConf[tempLine[0]]=tempLine[1]
+  configFile.close()
+  return(dictConf)
 
 def control_signal(signal_control, signal_handler):
   print("Stopping pyerver. Please wait....")
@@ -68,7 +76,7 @@ class CloseAll(Exception):
 signal.signal(signal.SIGINT, control_signal)
 signal.signal(signal.SIGTERM, control_signal)
 
-readConfig("server.conf")
+serverConfig=readConfig("server.conf")
 
 # Creamos el socket.
 try:
@@ -80,7 +88,7 @@ except IOError as socketError:
 
 # Enlazar el servidor con la direccion local y el puerto. Necesario definir una tupla.
 try:
-  ServerSocket.bind((HOST,PORT))
+  ServerSocket.bind((serverConfig["HOST"],int(serverConfig["PORT"])))
 except IOError as socketError:
   print("Could not bind with the specified address.")
   print(socketError.strerror + ", error code: " + str(socketError.errno))
