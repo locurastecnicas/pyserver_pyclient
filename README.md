@@ -1,4 +1,4 @@
 # pyserver_pyclient
-Implementación de un servidor multithread y un cliente de red en Python.
-La versión actual ya soporta varios clientes de red concurrentes mediante threading.
+Implementation of a multithreaded network chat server, and its corresponding client in Python.
+The first version supports multiple concurrent clients using threading.  
 
