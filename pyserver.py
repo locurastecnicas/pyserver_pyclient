@@ -91,11 +91,11 @@ try:
     connSocket,remoteAddr=ServerSocket.accept()  
     chat=echo_server(connSocket,remoteAddr) 
     chat.start()
-  except IOError as commsError:
+except IOError as commsError:
     print("There was an unexpected error.")
     print(socketError.strerror + ", error code: " + str(socketError.errno))
     sys.exit(socketError.errno)
-  except CloseAll:
+except CloseAll:
     ServerSocket.close()
     sys.exit(1)
 
