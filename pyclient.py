@@ -15,7 +15,7 @@ def readConfig(configFile):
   dictConf={}
   try:
     configFile=open("client.conf","r")
-    confString.replace(" ","")=configFile.read()
+    confString=configFile.read()
   except IOError as fileError:
     print("Couldn't open client config file.")
     print(fileError.strerror + ", error code: " + str(fileError.errno))
@@ -23,8 +23,8 @@ def readConfig(configFile):
   print(confString)
   for confLine in confString.split("\n"):
     if len(confLine) != 0:
-      tempLine=confLine.split(" = ")
-      dictConf[confLine(0)]=confLine(1)
+      tempLine=confLine.replace(" ","").split("=")
+      dictConf[tempLine(0)]=tempLine(1)
   print("The configuration is:")
   print(dictConf)
 
