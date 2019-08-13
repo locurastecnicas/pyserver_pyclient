@@ -26,7 +26,7 @@ def readConfig(configFile):
       tempLine=confLine.replace(" ","").split("=")
       dictConf[tempLine[0]]=tempLine[1]
   print("The configuration is:")
-  print(dictConf)
+  return(dictConf)
 
 def control_signal(signal_control, signal_handler):
   print("Stopping pyclient. Please wait....")
@@ -38,7 +38,7 @@ def control_signal(signal_control, signal_handler):
 signal.signal(signal.SIGINT, control_signal)
 signal.signal(signal.SIGTERM, control_signal)
 
-readConfig("client.conf")
+clientConfig=readConfig("client.conf")
 
 # Creamos el socket.
 try:
@@ -50,7 +50,7 @@ except IOError as socketError:
 # Stablishing connection with the remote server. A tuple is needed to define the
 # address and port of the server.
 try:
-  ClientSocket.connect((HOST,PORT))
+  ClientSocket.connect((clientConfig["HOST"],clientConfig["PORT"]))
 except IOError as socketError:
   print("There was an error connecting to the server.")
   print(socketError.strerror + ", error code: " + str(socketError.errno))
