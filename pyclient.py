@@ -24,7 +24,7 @@ def readConfig(configFile):
   for confLine in confString.split("\n"):
     if len(confLine) != 0:
       tempLine=confLine.replace(" ","").split("=")
-      dictConf[tempLine(0)]=tempLine(1)
+      dictConf[tempLine[0]]=tempLine[1]
   print("The configuration is:")
   print(dictConf)
 
