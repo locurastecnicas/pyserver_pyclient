@@ -21,8 +21,16 @@ class echo_server(threading.Thread):
         if not self.close_flag.is_set():
            recData=self.chat_socket.recv(1024)
         else:
+           print("SERVER - Enviando cierre al cliente.")
+           self.chat_socket.send(b'CIERRE')
            print("Pues se ha activado el flag.")
            break
+        if recData.find("CONTROL") != -1:
+           controlMSG=recData.split('||')
+           clientID=controlMSG[1] + self.remote_addr
+           userName=controlMSG[2]
+           self.chat_socket.send(b'Hola ' + userName + ', yo soy el servidor.')
+           self.chat_socket.send(b'Conexion registrada como ' + clientID + '.')
         if not recData:
            print("CLIENT - Recibido cierre desde el cliente.")
            break
@@ -30,9 +38,6 @@ class echo_server(threading.Thread):
         print("Los datos recibidos son ", recData)
         # Enviar datos al cliente.
         self.chat_socket.send(b'Hola cliente, yo soy el servidor.')
-    if self.close_flag.is_set():
-        print("SERVER - Enviando cierre al cliente.")
-        self.chat_socket.send(b'CIERRE')   
     self.chat_socket.close()
 
 def readConfig(configFile):
