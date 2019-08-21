@@ -38,8 +38,8 @@ class echo_server(threading.Thread):
         else:
            self.chat_socket.send(b'Hola ' + userName + '@' + clientID + ', yo soy el servidor.')
         
-        print("La direccion remota es " + self.remote_addr[0] )
-        print("Los datos recibidos son: " + recData)
+        print("Mensaje de " + userName + "@" + clientID + ".")
+        print("\tLos datos recibidos son: " + recData)
         # Enviar datos al cliente.
         
     self.chat_socket.close()

@@ -52,7 +52,12 @@ except IOError as socketError:
   sys.exit(socketError.errno)
 # Registro del cliente.
 clientID=str(uuid.uuid4())
+userName=""
 userName=raw_input("Please, input a username for the chat - ")
+while len(userName) == 0:
+  print("Username cannot be an empty string.")
+  userName=raw_input("Please, input a username for the chat - ")
+
 registerDATA="CONTROL" + "||" + clientID + "||" + userName
 try:
   ClientSocket.sendall(registerDATA)
