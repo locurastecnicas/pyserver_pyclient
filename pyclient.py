@@ -4,6 +4,7 @@ import time
 import socket
 import sys
 import signal
+import uuid
 
 def readConfig(configFile):
   print("Read the configuration of the client.")
@@ -49,7 +50,11 @@ except IOError as socketError:
   print("There was an error connecting to the server.")
   print(socketError.strerror + ", error code: " + str(socketError.errno))
   sys.exit(socketError.errno)
-
+# Registro del cliente.
+clientID=uuid.uuid4()
+userName=raw_input("Please, input a username for the chat. ")
+registerDATA=clientID + userName
+ClientSocket.sendall(registerDATA)
 # Enviar datos.
 while True:
     DATA=raw_input('>>')
