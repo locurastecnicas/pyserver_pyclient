@@ -75,5 +75,5 @@ while True:
         break
     ClientSocket.sendall(DATA)
     recData=ClientSocket.recv(1024)
-    print("Datos enviados por el servidor ", recData)
+    print("Datos enviados por el servidor " + recData)
 ClientSocket.close()
