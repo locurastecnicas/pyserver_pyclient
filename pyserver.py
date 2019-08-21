@@ -27,7 +27,7 @@ class echo_server(threading.Thread):
            break
         if recData.find("CONTROL") != -1:
            controlMSG=recData.split('||')
-           clientID=controlMSG[1] + self.remote_addr
+           clientID=controlMSG[1] + self.remote_addr[0]
            userName=controlMSG[2]
            self.chat_socket.send(b'Hola ' + userName + ', yo soy el servidor.')
            self.chat_socket.send(b'Conexion registrada como ' + clientID + '.')

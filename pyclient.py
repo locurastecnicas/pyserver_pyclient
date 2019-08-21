@@ -55,6 +55,8 @@ clientID=str(uuid.uuid4())
 userName=raw_input("Please, input a username for the chat. ")
 registerDATA="CONTROL" + "||" + clientID + "||" + userName
 ClientSocket.sendall(registerDATA)
+recData=ClientSocket.recv(1024)
+print(recData)
 chatPROMPT=userName + " >> "
 # Enviar datos.
 while True:
