@@ -30,9 +30,9 @@ class echo_server(threading.Thread):
            clientID=controlMSG[1] + "-" + self.remote_addr[0]
            userName=controlMSG[2]
            self.chat_socket.send(b'Hola ' + userName + ', yo soy el servidor.')
-           self.chat_socket.send(b'Conexion registrada como ' + clientID + '.')
+           self.chat_socket.send(b' Conexion registrada como ' + clientID + '.')
         else:
-           self.chat_socket.send(b'Hola' + userName + '@' + clientID + ', yo soy el servidor.')
+           self.chat_socket.send(b'Hola ' + userName + '@' + clientID + ', yo soy el servidor.')
         if not recData:
            print("CLIENT - Recibido cierre desde el cliente.")
            break

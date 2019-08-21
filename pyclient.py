@@ -52,11 +52,17 @@ except IOError as socketError:
   sys.exit(socketError.errno)
 # Registro del cliente.
 clientID=str(uuid.uuid4())
-userName=raw_input("Please, input a username for the chat. ")
+userName=raw_input("Please, input a username for the chat - ")
 registerDATA="CONTROL" + "||" + clientID + "||" + userName
-ClientSocket.sendall(registerDATA)
-recData=ClientSocket.recv(1024)
-print(recData)
+try:
+  ClientSocket.sendall(registerDATA)
+  recData=ClientSocket.recv(1024)
+  print(recData)
+except IOError as socketError:
+  print("There was an error registering with the server.")
+  print(socketError.strerror + ", error code: " + str(socketError.errno))
+  ClientSocket.close()
+  sys.exit(socketError.errno)
 chatPROMPT=userName + " >> "
 # Enviar datos.
 while True:
