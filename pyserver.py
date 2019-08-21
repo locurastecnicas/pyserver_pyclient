@@ -31,11 +31,12 @@ class echo_server(threading.Thread):
            userName=controlMSG[2]
            self.chat_socket.send(b'Hola ' + userName + ', yo soy el servidor.')
            self.chat_socket.send(b' Conexion registrada como ' + clientID + '.')
+        elif recData.find("CLOSE") != -1:
+           self.chat_socket.send(b'Cerrando chat, adios ' + userName + '@' + clientID )
+           break
         else:
            self.chat_socket.send(b'Hola ' + userName + '@' + clientID + ', yo soy el servidor.')
-        if not recData:
-           print("CLIENT - Recibido cierre desde el cliente.")
-           break
+        
         print("La direccion remota es ", self.remote_addr )
         print("Los datos recibidos son ", recData)
         # Enviar datos al cliente.

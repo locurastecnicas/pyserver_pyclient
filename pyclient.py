@@ -68,6 +68,9 @@ chatPROMPT=userName + " >> "
 while True:
     DATA=raw_input(chatPROMPT)
     if not DATA:
+        closeMSG="CLOSE" + "||" + clientID + "||" + userName
+        ClientSocket.sendall(closeMSG)
+        recData=ClientSocket.recv(1024)
         break
     ClientSocket.sendall(DATA)
     recData=ClientSocket.recv(1024)
