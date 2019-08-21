@@ -32,7 +32,8 @@ class echo_server(threading.Thread):
            self.chat_socket.send(b'Hola ' + userName + ', yo soy el servidor.')
            self.chat_socket.send(b' Conexion registrada como ' + clientID + '.')
         elif recData.find("CLOSE") != -1:
-           self.chat_socket.send(b'Cerrando chat, adios ' + userName + '@' + clientID )
+           print("Recibido cierre de " + userName + "@" + clientID + ".")
+           self.chat_socket.send(b'Cerrando chat, adios ' + userName + '@' + clientID + '.')
            break
         else:
            self.chat_socket.send(b'Hola ' + userName + '@' + clientID + ', yo soy el servidor.')

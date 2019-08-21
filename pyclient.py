@@ -71,6 +71,7 @@ while True:
         closeMSG="CLOSE" + "||" + clientID + "||" + userName
         ClientSocket.sendall(closeMSG)
         recData=ClientSocket.recv(1024)
+        print(recData)
         break
     ClientSocket.sendall(DATA)
     recData=ClientSocket.recv(1024)
