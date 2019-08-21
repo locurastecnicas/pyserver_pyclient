@@ -53,11 +53,12 @@ except IOError as socketError:
 # Registro del cliente.
 clientID=str(uuid.uuid4())
 userName=raw_input("Please, input a username for the chat. ")
-registerDATA="clientID" + "userName"
+registerDATA="CONTROL" + "||" + clientID + "||" + userName
 ClientSocket.sendall(registerDATA)
+chatPROMPT=userName + " >> "
 # Enviar datos.
 while True:
-    DATA=raw_input('>>')
+    DATA=raw_input(chatPROMPT)
     if not DATA:
         break
     ClientSocket.sendall(DATA)
